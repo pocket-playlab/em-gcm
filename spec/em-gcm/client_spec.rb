@@ -1,9 +1,10 @@
 require 'spec_helper'
+require 'webmock/rspec'
 
 describe EventMachine::GCM::Client do
-  let(:server_api_key) { ENV['GCM_API_KEY'] }
-  let(:restricted_package_name) { ENV['PACKAGE_NAME'] }
-  let(:registration_id) { ENV['REGISTRATION_ID'] }
+  let(:server_api_key) { ENV.fetch('GCM_API_KEY') }
+  let(:restricted_package_name) { ENV.fetch('GCM_PACKAGE_NAME') }
+  let(:registration_id) { ENV.fetch('GCM_REGISTRATION_ID') }
   before(:each) do
     @notification  = {
       :restricted_package_name => restricted_package_name,
