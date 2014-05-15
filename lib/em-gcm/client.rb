@@ -13,21 +13,21 @@ module EventMachine
         @start = Time.now.to_f
         http = EventMachine::HttpRequest.new(URL).post(
         :body => notification.to_json,
-        :head   => {
+        :head => {
           "Authorization"   => "key=#{server_api_key}",
           "Content-Type"    => "application/json",
-          "User-Agent"      => ['em-gcm-',EventMachine::GCM::VERSION].join
+          "User-Agent"      => "em-gcm-#{EventMachine::GCM::VERSION}",
         })
 
-        http.callback do
+        callback = Proc.new do
           response = EM::GCM::Response.new(http, @start)
           block.call(response) unless block.nil?
         end
 
-        http.errback do |e|
-          response = EM::GCM::Response.new(http, @start)
-          block.call(response) unless block.nil?
-        end
+        http.callback(&callback)
+        http.errback(&callback)
+
+        nil
       end
     end
   end
