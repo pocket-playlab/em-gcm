@@ -1,5 +1,6 @@
 require 'json'
 require 'eventmachine'
 require 'em-http'
+require 'em-gcm/version'
 require 'em-gcm/response'
 require 'em-gcm/client'
